@@ -6,6 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Gitesh Kubal">
+<meta name="dcterms.date" content="2025-11-30">
 
 <title>Confounder &amp; Randomization Challenge</title>
 <style>
@@ -20,27 +22,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="index_files/libs/clipboard/clipboard.min.js"></script>
@@ -54,7 +36,7 @@ div.csl-indent {
 <link href="index_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/bootstrap/bootstrap-a74871fe4945b66d259aafc266475145.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
@@ -91,10 +73,35 @@ window.Quarto = {
 
 </head>
 
-<body class="fullcontent quarto-light">
+<body class="quarto-light">
 
-<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#the-paradox-who-really-is-the-better-surgeon" id="toc-the-paradox-who-really-is-the-better-surgeon" class="nav-link active" data-scroll-target="#the-paradox-who-really-is-the-better-surgeon">The Paradox: Who <em>Really</em> Is the Better Surgeon?</a></li>
+  <li><a href="#observational-data-a-misleading-victory-for-doc-dreamy" id="toc-observational-data-a-misleading-victory-for-doc-dreamy" class="nav-link" data-scroll-target="#observational-data-a-misleading-victory-for-doc-dreamy">Observational Data: A Misleading Victory for Doc Dreamy</a>
+  <ul class="collapse">
+  <li><a href="#challenge-task-1-recover-figure-1-post-surgical-outcomes-by-patient" id="toc-challenge-task-1-recover-figure-1-post-surgical-outcomes-by-patient" class="nav-link" data-scroll-target="#challenge-task-1-recover-figure-1-post-surgical-outcomes-by-patient">Challenge Task 1: Recover Figure 1 — Post-Surgical Outcomes by Patient</a></li>
+  </ul></li>
+  <li><a href="#the-hidden-confounder-patient-severity-explains-it-all" id="toc-the-hidden-confounder-patient-severity-explains-it-all" class="nav-link" data-scroll-target="#the-hidden-confounder-patient-severity-explains-it-all">The Hidden Confounder: Patient Severity Explains It All</a></li>
+  <li><a href="#solution-1-randomization-break-the-confounding-path" id="toc-solution-1-randomization-break-the-confounding-path" class="nav-link" data-scroll-target="#solution-1-randomization-break-the-confounding-path">Solution 1: Randomization — Break the Confounding Path</a>
+  <ul class="collapse">
+  <li><a href="#our-data-doesnt-have-counterfactuals-how-can-we-know-what-would-have-happened-to-those-patients-if-we-had-randomized" id="toc-our-data-doesnt-have-counterfactuals-how-can-we-know-what-would-have-happened-to-those-patients-if-we-had-randomized" class="nav-link" data-scroll-target="#our-data-doesnt-have-counterfactuals-how-can-we-know-what-would-have-happened-to-those-patients-if-we-had-randomized">Our data doesn’t have counterfactuals, how can we know what would have happened to those patients if we had randomized?</a></li>
+  <li><a href="#challenge-task-2-recover-figure-2-randomized-assignment-outcomes" id="toc-challenge-task-2-recover-figure-2-randomized-assignment-outcomes" class="nav-link" data-scroll-target="#challenge-task-2-recover-figure-2-randomized-assignment-outcomes">Challenge Task 2: Recover Figure 2 — Randomized Assignment Outcomes</a></li>
+  </ul></li>
+  <li><a href="#solution-2-stratification-when-you-cant-randomize" id="toc-solution-2-stratification-when-you-cant-randomize" class="nav-link" data-scroll-target="#solution-2-stratification-when-you-cant-randomize">Solution 2: Stratification — When You Can’t Randomize</a>
+  <ul class="collapse">
+  <li><a href="#challenge-task-3-recover-figure-3-outcomes-by-patient-severity-stratification" id="toc-challenge-task-3-recover-figure-3-outcomes-by-patient-severity-stratification" class="nav-link" data-scroll-target="#challenge-task-3-recover-figure-3-outcomes-by-patient-severity-stratification">Challenge Task 3: Recover Figure 3 — Outcomes by Patient Severity (Stratification)</a></li>
+  </ul></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -107,7 +114,19 @@ window.Quarto = {
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Gitesh Kubal </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 30, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -129,12 +148,12 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><em>Paraphrased from</em> <span class="citation" data-cites="taleb2017surgeons">(<a href="#ref-taleb2017surgeons" role="doc-biblioref">Taleb 2017</a>)</span></p>
+<p><em>Paraphrased from</em> <span class="citation" data-cites="taleb2017surgeons">[@taleb2017surgeons]</span></p>
 <div style="float: right; margin-left: 15px; margin-bottom: 10px;">
 <p><img src="docSideBySide.jpg" alt="Doc Dreamy and Doc Duck side by side" style="max-width: 250px; height: auto; border-radius: 5px;"></p>
 </div>
 <p>Imagine you need to choose between two surgeons of similar rank at the same hospital. The first surgeon, Doc Dreamy, matches our stereotype perfectly: refined appearance, silver-rimmed glasses, delicate hands, measured speech, and an office adorned with Ivy League diplomas (see the image). The second surgeon, Doc Duck, by contrast, looks more like a butcher—overweight, with large hands, an unkempt appearance, and no visible credentials on the wall.</p>
-<p>Counterintuitively, the surgeon who doesn’t “look the part” may actually be the better choice. Why? Because when someone succeeds in their profession despite not fitting the expected appearance, it suggests they had to overcome significant perceptual biases. And if we are lucky enough to have people who do not look the part, it is thanks to the presence of some skin in the game, the contact with reality that filters out incompetence. <span class="citation" data-cites="taleb2017surgeons">(<a href="#ref-taleb2017surgeons" role="doc-biblioref">Taleb 2017</a>)</span></p>
+<p>Counterintuitively, the surgeon who doesn’t “look the part” may actually be the better choice. Why? Because when someone succeeds in their profession despite not fitting the expected appearance, it suggests they had to overcome significant perceptual biases. And if we are lucky enough to have people who do not look the part, it is thanks to the presence of some skin in the game, the contact with reality that filters out incompetence. <span class="citation" data-cites="taleb2017surgeons">[@taleb2017surgeons]</span></p>
 </div>
 </div>
 </section>
@@ -144,7 +163,7 @@ window.Quarto = {
 <div class="cell-output cell-output-stdout">
 <pre><code>Number of patients: 100</code></pre>
 </div>
-<div id="load-data-python" class="cell-output cell-output-display" data-execution_count="2">
+<div id="load-data-python" class="cell-output cell-output-display" data-execution_count="58">
 <div>
 
 
@@ -214,7 +233,7 @@ window.Quarto = {
 <div id="fig-plot-outcomes" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-plot-outcomes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-plot-outcomes-output-1.png" width="807" height="566" class="figure-img">
+<img src="index_files/figure-html/fig-plot-outcomes-output-1.png" width="711" height="518" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-outcomes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Post-Surgical Symptom Score (lower is better) - Observed Data
@@ -302,7 +321,7 @@ Figure&nbsp;4: DAG Model Explaining Surgical Outcomes
 <div class="cell-output cell-output-stdout">
 <pre><code>Number of randomized patients: 100</code></pre>
 </div>
-<div id="load-data-randomized-python" class="cell-output cell-output-display" data-execution_count="5">
+<div id="load-data-randomized-python" class="cell-output cell-output-display" data-execution_count="61">
 <div>
 
 
@@ -373,7 +392,7 @@ Figure&nbsp;4: DAG Model Explaining Surgical Outcomes
 <div id="fig-plot-outcomes-randomized" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-plot-outcomes-randomized-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-plot-outcomes-randomized-output-1.png" width="807" height="566" class="figure-img">
+<img src="index_files/figure-html/fig-plot-outcomes-randomized-output-1.png" width="711" height="518" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-outcomes-randomized-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5: Post-Surgical Symptom Score (lower is better) for randomized patients.
@@ -394,7 +413,7 @@ Figure&nbsp;5: Post-Surgical Symptom Score (lower is better) for randomized pati
 <div id="fig-plot-outcomes-severity" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-plot-outcomes-severity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-plot-outcomes-severity-output-1.png" width="807" height="566" class="figure-img">
+<img src="index_files/figure-html/fig-plot-outcomes-severity-output-1.png" width="711" height="518" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-outcomes-severity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;6: Post-Surgical Symptom Score (lower is better) by Patient and Severity
@@ -407,22 +426,13 @@ Figure&nbsp;6: Post-Surgical Symptom Score (lower is better) by Patient and Seve
 <p>Within the highlighted region, Doc Dreamy’s blue circles tend to be higher (worse) than Doc Duck’s red triangles for these patients. It is also obvious that Doc Duck is seeing the more severe patients overall, as his red triangles are generally to the right of Doc Dreamy’s blue circles on the x-axis. This is exactly what we would expect if patient severity were a common cause of surgeon choice and surgical outcomes. Despite the aggregate statistics pointing to Doc Dreamy having lower (better) post-surgical symptom scores on average, our visual analysis of this overlapping region leads us to conclude that Doc Duck is actually the better surgeon—a conclusion that would be obscured if we only looked at the means without stratifying by severity.</p>
 </section>
 </section>
-<section id="how-to-solve-the-confounder-challenge" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-solve-the-confounder-challenge">How to Solve the Confounder Challenge</h2>
-<p>Here’s the problem with graphs and statistics in general: the numbers can easily mislead you. Or rather, you can be misled <em>by</em> the numbers when you don’t understand what they’re really telling you.</p>
-<p>When you just look at the raw data and ask who had better outcomes, Doc Dreamy wins. Lower scores look great on paper. But here’s where it gets important: that association doesn’t mean what you think it means. Correlation is not causation, and we all know that, but we forget it every single time because our brains are wired to see patterns and assign causes.</p>
-<p>The real villain here is patient severity. It operates like a puppeteer behind the curtain, making Doc Dreamy look good by sending him easier cases while sending Doc Duck the harder ones. When you don’t randomize, you can’t tell the difference between “Doc Dreamy is a better surgeon” and “Doc Dreamy got lucky with his patient assignment.” On any graph or in any headline, look for the common-cause-confounder villian that is unaccounted for.</p>
-<p>Randomization is an excellent defense against this kind of confounding. Flip a coin, assign patients randomly, and suddenly the puppeteer loses control. Now you can actually see who the better surgeon is. And the surprise is that it’s the one who doesn’t look the part. The data wasn’t lying; it was just answering a different question than you thought you were asking.</p>
-<p>If you can’t randomize, and that’s most of the time, you stratify. Look within groups of similar patient severity. Compare apples to apples, not apples to oranges. It’s more work, and it’s less satisfying than a clean randomized trial, but it’s better than being fooled by confounding.</p>
-<p>The take-home lesson: The world is messy, and the numbers will mislead you if you let them. But if you understand the structure of the problem, if you draw the DAG and think about what causes what, you can defend yourself against being fooled. Randomization when you can, stratification when you can’t. The tools are simple. The hard part is remembering to use them.</p>
-
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+<p><strong>References</strong></p>
+<p>Taleb, Nassim Nicholas. 2017. “Surgeons Should Not Look Like Surgeons.” <a href="https://medium.com/incerto/surgeons-should-notlook-like-surgeons-23b0e2cf6d52">https://medium.com/incerto/surgeons-should-notlook-like-surgeons-23b0e2cf6d52</a>.</p>
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-taleb2017surgeons" class="csl-entry" role="listitem">
-Taleb, Nassim Nicholas. 2017. <span>“Surgeons Should Not Look Like Surgeons.”</span> <a href="https://medium.com/incerto/surgeons-should-notlook-like-surgeons-23b0e2cf6d52">https://medium.com/incerto/surgeons-should-notlook-like-surgeons-23b0e2cf6d52</a>.
-</div>
-</div></section></div></main>
+</main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

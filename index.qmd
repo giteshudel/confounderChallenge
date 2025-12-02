@@ -1,9 +1,16 @@
 ---
 title: "Confounder & Randomization Challenge"
 subtitle: "Recovering Lost Figures: Visualizing Confounders and Causal Inference"
+author: "Gitesh Kubal"
+date: November 30, 2025
 format:
-  html: default
-bibliography: references.bib
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    toc-title: "Contents"
+    number-sections: false
+    theme: cosmo
 execute:
   echo: true
   eval: true
@@ -105,7 +112,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Create figure with professional styling
-fig, ax = plt.subplots(figsize=(8.5, 6))
+fig, ax = plt.subplots(figsize=(7.5, 5.5))
 
 # Separate data by doctor
 dreamy_data = patients_df[patients_df['doctor_name'] == 'Doc Dreamy']
@@ -131,11 +138,11 @@ ax.axhline(y=duck_mean, color='#E15759', linestyle='--', linewidth=1.5, alpha=0.
 # Position annotations at the right edge of the plot
 x_max = patients_df['patient'].max()
 x_pos = x_max * 0.98
-ax.text(x_pos, dreamy_mean, f'○ {dreamy_mean:.2f}', 
+ax.text(x_pos, dreamy_mean, f'○ Mean = {dreamy_mean:.2f}', 
         color='#4E79A7', fontsize=11, fontweight='bold',
         verticalalignment='center', horizontalalignment='right',
         bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='#4E79A7', alpha=0.8))
-ax.text(x_pos, duck_mean, f'△ {duck_mean:.2f}', 
+ax.text(x_pos, duck_mean, f'△ Mean = {duck_mean:.2f}', 
         color='#E15759', fontsize=11, fontweight='bold',
         verticalalignment='center', horizontalalignment='right',
         bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='#E15759', alpha=0.8))
@@ -269,7 +276,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Create figure with professional styling
-fig, ax = plt.subplots(figsize=(8.5, 6))
+fig, ax = plt.subplots(figsize=(7.5, 5.5))
 
 # Separate data by doctor
 dreamy_data = patients_randomized_df[patients_randomized_df['doctor_name'] == 'Doc Dreamy']
@@ -295,11 +302,11 @@ ax.axhline(y=duck_mean, color='#E15759', linestyle='--', linewidth=1.5, alpha=0.
 # Position annotations at the right edge of the plot
 x_max = patients_randomized_df['patient'].max()
 x_pos = x_max * 0.98
-ax.text(x_pos, dreamy_mean, f'○ {dreamy_mean:.2f}', 
+ax.text(x_pos, dreamy_mean, f'○ Mean = {dreamy_mean:.2f}', 
         color='#4E79A7', fontsize=11, fontweight='bold',
         verticalalignment='center', horizontalalignment='right',
         bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='#4E79A7', alpha=0.8))
-ax.text(x_pos, duck_mean, f'△ {duck_mean:.2f}', 
+ax.text(x_pos, duck_mean, f'△ Mean = {duck_mean:.2f}', 
         color='#E15759', fontsize=11, fontweight='bold',
         verticalalignment='center', horizontalalignment='right',
         bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='#E15759', alpha=0.8))
@@ -333,7 +340,7 @@ import matplotlib.patches as mpatches
 import numpy as np
 
 # Create figure with professional styling
-fig, ax = plt.subplots(figsize=(8.5, 6))
+fig, ax = plt.subplots(figsize=(7.5, 5.5))
 
 # Separate data by doctor
 dreamy_data = patients_df[patients_df['doctor_name'] == 'Doc Dreamy']
@@ -365,17 +372,37 @@ ax.axhline(y=dreamy_mean, color='#4E79A7', linestyle='--', linewidth=1.5, alpha=
 ax.axhline(y=duck_mean, color='#E15759', linestyle='--', linewidth=1.5, alpha=0.8, zorder=1)
 
 # Add text annotations with shape symbols
-# Position annotations at appropriate locations
+# Position annotations at appropriate locations with overlap prevention
 x_max = patients_df['severity'].max()
 x_min = patients_df['severity'].min()
 x_range = x_max - x_min
-ax.text(x_max - x_range * 0.05, dreamy_mean, f'○ {dreamy_mean:.2f}', 
-        color='#4E79A7', fontsize=11, fontweight='bold',
-        verticalalignment='center', horizontalalignment='right',
+y_max = patients_df['post_surgical_score'].max()
+y_min = patients_df['post_surgical_score'].min()
+y_range = y_max - y_min
+
+# Calculate distance between means relative to y-range
+mean_distance = abs(dreamy_mean - duck_mean)
+min_separation = y_range * 0.08  # Minimum separation threshold (8% of y-range)
+
+# Set both annotations to the same x-position (in line with each other)
+x_pos_dreamy = x_max - x_range * 0.05
+x_pos_duck = x_max - x_range * 0.05
+
+# Adjust vertical alignment based on which mean is higher to prevent overlap
+if dreamy_mean > duck_mean:
+    va_dreamy = 'bottom'
+    va_duck = 'top'
+else:
+    va_dreamy = 'top'
+    va_duck = 'bottom'
+
+ax.text(x_pos_dreamy, dreamy_mean, f'○ Mean (Overlap) = {dreamy_mean:.2f}', 
+        color='#4E79A7', fontsize=10, fontweight='bold',
+        verticalalignment=va_dreamy, horizontalalignment='right',
         bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='#4E79A7', alpha=0.8))
-ax.text(x_max - x_range * 0.05, duck_mean, f'△ {duck_mean:.2f}', 
-        color='#E15759', fontsize=11, fontweight='bold',
-        verticalalignment='center', horizontalalignment='right',
+ax.text(x_pos_duck, duck_mean, f'△ Mean (Overlap) = {duck_mean:.2f}', 
+        color='#E15759', fontsize=10, fontweight='bold',
+        verticalalignment=va_duck, horizontalalignment='right',
         bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='#E15759', alpha=0.8))
 
 # Professional styling
@@ -398,18 +425,10 @@ Looking at @fig-plot-outcomes-severity, the value of stratifying by severity is 
 
 Within the highlighted region, Doc Dreamy's blue circles tend to be higher (worse) than Doc Duck's red triangles for these patients. It is also obvious that Doc Duck is seeing the more severe patients overall, as his red triangles are generally to the right of Doc Dreamy's blue circles on the x-axis. This is exactly what we would expect if patient severity were a common cause of surgeon choice and surgical outcomes. Despite the aggregate statistics pointing to Doc Dreamy having lower (better) post-surgical symptom scores on average, our visual analysis of this overlapping region leads us to conclude that Doc Duck is actually the better surgeon—a conclusion that would be obscured if we only looked at the means without stratifying by severity.
 
-## How to Solve the Confounder Challenge
+##
 
-Here's the problem with graphs and statistics in general: the numbers can easily mislead you. Or rather, you can be misled *by* the numbers when you don't understand what they're really telling you.
+**References**
 
-When you just look at the raw data and ask who had better outcomes, Doc Dreamy wins. Lower scores look great on paper. But here's where it gets important: that association doesn't mean what you think it means. Correlation is not causation, and we all know that, but we forget it every single time because our brains are wired to see patterns and assign causes.
-
-The real villain here is patient severity. It operates like a puppeteer behind the curtain, making Doc Dreamy look good by sending him easier cases while sending Doc Duck the harder ones. When you don't randomize, you can't tell the difference between "Doc Dreamy is a better surgeon" and "Doc Dreamy got lucky with his patient assignment."  On any graph or in any headline, look for the common-cause-confounder villian that is unaccounted for.
-
-Randomization is an excellent defense against this kind of confounding. Flip a coin, assign patients randomly, and suddenly the puppeteer loses control. Now you can actually see who the better surgeon is. And the surprise is that it's the one who doesn't look the part. The data wasn't lying; it was just answering a different question than you thought you were asking.
-
-If you can't randomize, and that's most of the time, you stratify. Look within groups of similar patient severity. Compare apples to apples, not apples to oranges. It's more work, and it's less satisfying than a clean randomized trial, but it's better than being fooled by confounding.
-
-The take-home lesson: The world is messy, and the numbers will mislead you if you let them. But if you understand the structure of the problem, if you draw the DAG and think about what causes what, you can defend yourself against being fooled. Randomization when you can, stratification when you can't. The tools are simple. The hard part is remembering to use them.
+Taleb, Nassim Nicholas. 2017. “Surgeons Should Not Look Like Surgeons.” [https://medium.com/incerto/surgeons-should-notlook-like-surgeons-23b0e2cf6d52](https://medium.com/incerto/surgeons-should-notlook-like-surgeons-23b0e2cf6d52).
 
 
